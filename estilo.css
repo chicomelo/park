@@ -1,0 +1,9 @@
+.vagas{}
+
+    .vagas .vaga{
+        width: 30px;
+        height: 30px;
+        background: red;
+        float: left;
+        margin: 5px;
+    }
