@@ -1,20 +1,21 @@
-body{
-    background: #2076cd!important;
+html, body { margin:0; height: 100%; background: #2076cd!important; }
 
-
+.container-fluid, .row, .col-sm-6{
+    height: 100%;
 }
 
-.logo{
-}
+.logo{}
 
-.vagas{}
+.vagas{height: 90%;}
 
     .vagas .vaga{
-        width: 10%;
-        height: 30px;
+        width: 11%;
+        height: 9%;
         background: #fff;
         float: left;
-        margin: 5px;
+        margin-bottom: 1%;
+        margin-right: 1%;
+
     }
 
 .conteudo{
@@ -27,12 +28,14 @@ body{
     padding-top: 15px;
 }
 
-form[name=busca_carro]{}
+form[name=busca_carro]{
+    border-bottom: 1px dotted rgba(255,255,255,0.5); padding-bottom: 25px;
+}
 
-form[name=busca_carro] h3{ border-top: 1px dotted rgba(255,255,255,0.5); padding-top: 20px;}
+form[name=busca_carro] h3{ border-top: 1px dotted rgba(255,255,255,0.5); padding-top: 20px; margin-top: 20px;}
 
 form[name=busca_carro] input{
-    font-size: 32px;
+    font-size: 30px;
     height: auto;
     color: #666;
     line-height: 46px;
@@ -41,15 +44,13 @@ form[name=busca_carro] input{
 form[name=busca_carro] button{
     width: 100%;
     line-height: 46px;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
 }
 
-.resultado{ margin-top: 30px; }
-
+.resultado{ display: none;}
 
 .resultado table tr th{ background: rgba(255,255,255,0.2);}
-
 
 .resultado table tr td{
     line-height: 28px;
@@ -65,4 +66,10 @@ form[name=busca_carro] button{
 
 .resultado .cadastrar-carro{
     text-align: center;
+    margin-top: 30px;
+}
+
+#form_cadastro{
+    padding-top: 30px;
+    margin: 0px auto;
 }
