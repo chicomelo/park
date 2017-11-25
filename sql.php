@@ -21,10 +21,20 @@
 
 		//execu��o de comandos
 		public function query($rawQuery, $params = array()){
-			$stmt = $this->conn->prepare($rawQuery);
-			$this->setParams($stmt, $params);
-			$stmt->execute();
-			return $stmt;
+/*
+			if($stmt->execute() === false){
+			    return($stmt->errorInfo());
+			}
+			*/
+			try{
+				$stmt = $this->conn->prepare($rawQuery);
+				$this->setParams($stmt, $params);
+	            $stmt->execute();
+				return $stmt;
+	        }catch(PDOException $e){
+				throw new dbException($e->getMessage(), (int)$e->getCode());
+	        }
+
 		}
 
 		public function select($rawQuery, $params = array()){   //:array

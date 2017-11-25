@@ -79,14 +79,14 @@
                                 setTimeout(function() {
                                     $this.button('reset');
                                     resultado.slideDown();
-                                }, 100);
+                                }, 1000);
                             }else{
                                 alert('Digite a placa do carro')
                             }
                         });
                         $('#btn-iniciar-cadastro').on('click', function() {
                             var resultado = $('.resultado');
-                            var form_cadastro = $('.form_cadastro');
+                            var form_cadastro = $('#form_cadastrar');
                             var placa_buscar = $('#placa-buscar').val();
                             setTimeout(function() {
                                 resultado.html('');
@@ -104,7 +104,7 @@
 
                                 var resultado = $('.resultado');
                                 var form_cadastrar = $('#form_cadastrar').serialize();
-                                var url = "estacionamento.php";
+                                var url = "estacionamento.php?acao=cadastrar-carro";
 
                                 $.post( url, form_cadastrar , function(){})
                                 .done(function(response) {

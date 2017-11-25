@@ -10,8 +10,8 @@ html, body { margin:0; height: 100%; background: #2076cd!important; }
 
     .vagas .vaga{
         width: 11%;
-        height: 9%;
         background: #fff;
+        height: 9%;
         float: left;
         margin-bottom: 1%;
         margin-right: 1%;
@@ -59,9 +59,9 @@ form[name=busca_carro] button{
     border: 0;
     line-height: normal;
 }
-.resultado table tr td:nth-child(3), .resultado table tr th:nth-child(3){
+.resultado table tr td:nth-child(5), .resultado table tr th:nth-child(5){
     text-align: center;
-    width: 30%;
+    width: 25%;
 }
 
 .resultado .cadastrar-carro{
@@ -69,7 +69,7 @@ form[name=busca_carro] button{
     margin-top: 30px;
 }
 
-#form_cadastro{
+#form_cadastrar{
     padding-top: 30px;
     margin: 0px auto;
 }

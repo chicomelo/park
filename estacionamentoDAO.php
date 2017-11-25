@@ -29,7 +29,7 @@ class CarrosDAO extends Sql {
     function inserir($placa, $modelo, $cor){
         $sql = new Sql();
 
-		$resultado = $sql -> query("INSERT INTO carros (placa, modelo, cor)
+		$resultado = $sql -> query("INSERT INTO carros (laca, modelo, cor)
 										VALUES (:PLACA, :MODELO, :COR)",
 		array(":PLACA"=>$placa, ":MODELO"=>$modelo ,":COR"=>$cor));
 		return ($resultado);
@@ -55,7 +55,14 @@ class CarrosDAO extends Sql {
 }
 
 class VagasDAO extends Sql{
-    function atualizar($numero){
+
+    function buscar_vagas_ativas(){
+        $sql = new Sql();
+		$results = $sql->select("SELECT * FROM vagas WHERE ativo = 1");
+		return $results;
+    }
+
+    function atualizar($ativo, $numero){
         $sql = new Sql();
 
         $resultado = $sql -> query("UPDATE vagas
