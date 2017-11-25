@@ -1,0 +1,68 @@
+body{
+    background: #2076cd!important;
+
+
+}
+
+.logo{
+}
+
+.vagas{}
+
+    .vagas .vaga{
+        width: 10%;
+        height: 30px;
+        background: #fff;
+        float: left;
+        margin: 5px;
+    }
+
+.conteudo{
+    padding: 30px;
+    font-family: 'Open Sans', sans-serif;
+    color: #fff;
+}
+
+.conteudo .bem-vindo{
+    padding-top: 15px;
+}
+
+form[name=busca_carro]{}
+
+form[name=busca_carro] h3{ border-top: 1px dotted rgba(255,255,255,0.5); padding-top: 20px;}
+
+form[name=busca_carro] input{
+    font-size: 32px;
+    height: auto;
+    color: #666;
+    line-height: 46px;
+}
+
+form[name=busca_carro] button{
+    width: 100%;
+    line-height: 46px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.resultado{ margin-top: 30px; }
+
+
+.resultado table tr th{ background: rgba(255,255,255,0.2);}
+
+
+.resultado table tr td{
+    line-height: 28px;
+}
+.resultado table tr td input[type=button]{
+    border: 0;
+    line-height: normal;
+}
+.resultado table tr td:nth-child(3), .resultado table tr th:nth-child(3){
+    text-align: center;
+    width: 30%;
+}
+
+.resultado .cadastrar-carro{
+    text-align: center;
+}
