@@ -29,7 +29,7 @@ html, body { margin:0; height: 100%; background: #2076cd!important; }
 }
 
 form[name=busca_carro]{
-    border-bottom: 1px dotted rgba(255,255,255,0.5); padding-bottom: 25px;
+    border-bottom: 1px dotted rgba(255,255,255,0.5); padding-bottom: 25px; margin-bottom: 30px;
 }
 
 form[name=busca_carro] h3{ border-top: 1px dotted rgba(255,255,255,0.5); padding-top: 20px; margin-top: 20px;}
@@ -66,10 +66,9 @@ form[name=busca_carro] button{
 
 .resultado .cadastrar-carro{
     text-align: center;
-    margin-top: 30px;
 }
 
 #form_cadastrar{
-    padding-top: 30px;
+    display: none;
     margin: 0px auto;
 }

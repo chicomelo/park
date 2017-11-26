@@ -26,14 +26,23 @@
 require_once ("sql.php");
 
 class CarrosDAO extends Sql {
-    function inserir($placa, $modelo, $cor){
+    function inserir($carros){
         $sql = new Sql();
 
-		$resultado = $sql -> query("INSERT INTO carros (laca, modelo, cor)
+		$resultado = $sql -> query("INSERT INTO carros (placa, modelo, cor)
 										VALUES (:PLACA, :MODELO, :COR)",
-		array(":PLACA"=>$placa, ":MODELO"=>$modelo ,":COR"=>$cor));
+		array(":PLACA"=>$carros->getplaca(), ":MODELO"=>$carros->getmodelo() ,":COR"=>$carros->getcor()));
 		return ($resultado);
     }
+
+    function buscar_carro_placa($carros){
+        $sql = new Sql();
+
+		$results = $sql->select("SELECT * FROM carros WHERE placa = :PLACA", array(":PLACA"=>$carros->getplaca()));
+
+        return $results;
+    }
+
     function atualizar($cod_carro, $placa, $modelo, $cor){
         $sql = new Sql();
 
@@ -56,32 +65,30 @@ class CarrosDAO extends Sql {
 
 class VagasDAO extends Sql{
 
-    function buscar_vagas_ativas(){
+    function buscar_vagas_disponiveis(){
         $sql = new Sql();
 		$results = $sql->select("SELECT * FROM vagas WHERE ativo = 1");
 		return $results;
     }
 
-    function atualizar($ativo, $numero){
+    function atualizar($vagas){
         $sql = new Sql();
 
         $resultado = $sql -> query("UPDATE vagas
-                                        SET ativo = :ATIVO,
-                                        modelo = :MODELO,
-                                        cor = :COR
-                                        WHERE numero = :NUMERO",
-        array(":ATIVO"=>$ativo, ":COD_VAGA"=>$numero));
+                                        SET ativo = :ATIVO
+                                        WHERE cod_vaga = :COD_VAGA",
+        array(":ATIVO"=>$vagas->getativo(), ":COD_VAGA"=>$vagas->getcod_vaga()));
         return ($resultado);
     }
 }
 
 class TicketsDAO extends Sql{
-    function inserir(){
+    function inserir($tickets){
         $sql = new Sql();
 
         $resultado = $sql -> query("INSERT INTO tickets (cod_vaga, cod_carro, data_chegada)
-                                        VALUES (:COD_VAGA, :COD_CARRO, :DATA_CHEGADA)",
-        array(":COD_VAGA"=>$cod_vaga, ":COD_CARRO"=>$cod_carro ,":DATA_CHEGADA"=>$data_chegada));
+                        VALUES (:COD_VAGA, :COD_CARRO, NOW())",
+        array(":COD_VAGA"=>$tickets->getcod_vaga(), ":COD_CARRO"=>$tickets->getcod_carro() ));
         return ($resultado);
     }
     function atualizar($data_saida, $valor, $cod_ticket){

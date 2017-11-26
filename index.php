@@ -17,6 +17,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="conteudo">
+
                     <div class="row">
                         <div class="col-md-5">
                             <div class="logo">
@@ -69,9 +70,9 @@
                     <script>
 
                     $(function(){
+
                         $('#btn-buscar').on('click', function() {
                             var placa_buscar = $('#placa-buscar').val();
-
                             if(placa_buscar){
                                 var $this = $(this);
                                 var resultado = $('.resultado');
@@ -84,32 +85,54 @@
                                 alert('Digite a placa do carro')
                             }
                         });
+
                         $('#btn-iniciar-cadastro').on('click', function() {
-                            var resultado = $('.resultado');
-                            var form_cadastro = $('#form_cadastrar');
+                            var $this = $(this);
                             var placa_buscar = $('#placa-buscar').val();
-                            setTimeout(function() {
+                            var resultado = $('.resultado');
+                            var form_cadastrar = $('#form_cadastrar');
+                            $this.button('loading');
+                            var url = "estacionamento.php?acao=buscar-vagas-disponiveis";
+
+                            $.post( url, '', function(){})
+                            .done(function(response) {
                                 resultado.html('');
-                                resultado.append(form_cadastro);
-                                $('#placa-cadastro').attr('value',placa_buscar)
-                                form_cadastro.fadeIn();
-                            }, 100);
+                                resultado.fadeOut();
+                                form_cadastrar.fadeIn();
+                                $('#placa-cadastrar').attr('value',placa_buscar);
+                                $('#vaga-cadastrar').append(response);
+                                setTimeout(function() {
+                                    $this.button('reset');
+                                }, 1000);
+                            })
+                            .fail(function() {
+                            });
                         });
+
                         $('#btn-cadastrar').on('click', function() {
+                            var $this = $(this);
                             var placa_cadastrar = $('#placa-cadastrar').val();
                             var modelo_cadastrar = $('#modelo-cadastrar').val();
                             var cor_cadastrar = $('#cor-cadastrar').val();
 
                             if((placa_cadastrar != '') && (modelo_cadastrar != '') && (cor_cadastrar != '')){
-
+                                $this.button('loading');
                                 var resultado = $('.resultado');
-                                var form_cadastrar = $('#form_cadastrar').serialize();
+                                var form_cadastrar = $('#form_cadastrar');
                                 var url = "estacionamento.php?acao=cadastrar-carro";
 
-                                $.post( url, form_cadastrar , function(){})
+                                $.post( url, form_cadastrar.serialize(), function(){})
                                 .done(function(response) {
-                                    resultado.html(response);
-                                    resultado.slideDown();
+                                    setTimeout(function() {
+                                        form_cadastrar[0].reset();
+                                        form_cadastrar.hide();
+                                        $this.button('reset');
+                                        resultado.fadeIn();
+                                        resultado.html('<center><i class="fa fa-check" aria-hidden="true"></i> Carro cadastrado com sucesso!</center>');
+                                        setTimeout(function(){
+                                            resultado.fadeOut('slow');
+                                        }, 5000)
+                                    }, 1000);
                                 })
                                 .fail(function() {
                                 });
@@ -117,6 +140,29 @@
                             }else{
                                 alert("Preencha todos os campos");
                             }
+                        });
+
+                        $('#btn-entrada').on('click', function() {
+                            alert('oi');
+                            var $this = $(this);
+                            var carro = $this.attr('data-cod_carro');
+                            var vaga = $('#vaga-entrada option:selected').val();
+                            var resultado = $('.resultado');
+
+                            $this.button('loading');
+
+                            var url = "estacionamento.php?acao=entrada-carro";
+
+                            $.post( url, { cod_carro: carro, cod_vaga: vaga } , function(){})
+                            .done(function(response) {
+                                resultado.html(response);
+                                resultado.slideDown();
+                                setTimeout(function() {
+                                    $this.button('reset');
+                                }, 1000);
+                            })
+                            .fail(function() {
+                            });
 
 
                         });
@@ -139,19 +185,52 @@
                                     <input type="text" name="modelo" class="form-control" id="modelo-cadastrar" placeholder="Modelo" value="">
                                 </div>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="cor">Cor</label>
                                     <input type="text" name="cor" class="form-control" id="cor-cadastrar" placeholder="Cor" value="">
                                 </div>
                             </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="cor">Vaga</label>
+                                    <select class="form-control" name="vaga" id="vaga-cadastrar">
+                                    </select>
+                                </div>
+                            </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <label>&nbsp;</label><br>
-                                <input type="button" name="btn-cadastrar" value="Cadastrar" id="btn-cadastrar" class="btn btn-success">
+                                <button type="button" class="btn btn-success" id="btn-cadastrar" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Cadastrando">Cadastrar</button>
                             </div>
                         </div>
                     </form>
+
+                    <form action="" method="post" name="form_entrada_saida" id="form_entrada_saida">
+                        <h4>Entrada do carro</h4>
+
+                        <table class="table">
+                            <tr>
+                                <th>Placa</th>
+                                <th>Modelo</th>
+                                <th>Cor</th>
+                                <th>Vaga</th>
+                                <th>Ação</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                <select class="form-control" name="vaga-entrada" id="vaga-entrada">
+                                </select>
+                                </td>
+                                <td>
+                                <button type="button" class="btn btn-success" id="btn-entrada" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Inserindo" data-cod_carro="">Entrada</button>
+                            </tr>
+                        </table>
+                    </form>
+
 
                 </div>
             </div>
