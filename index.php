@@ -42,132 +42,122 @@
                     </form>
 
                     <div class="resultado">
-
-                        <div class="cadastrar-carro">
-                            <p>Nenhum veículo encontrado</p>
-                            <input type="button" value="Cadastrar" id="btn-iniciar-cadastro" class="btn btn-success">
-                        </div>
-
-                        <!-- <table class="table">
-                            <tr>
-                                <th>Modelo</th>
-                                <th>Cor</th>
-                                <th>Ação</th>
-                            </tr>
-                            <tr>
-                                <td>Gol</td>
-                                <td>Vermelho</td>
-                                <td><input type="button" value="Entrada" class="btn btn-success"></td>
-                            </tr>
-                            <tr>
-                                <td>Gol</td>
-                                <td>Vermelho</td>
-                                <td><input type="button" value="Saída" class="btn btn-warning"></td>
-                            </tr>
-                        </table> -->
                     </div>
 
-                    <script>
+                    <div class='cadastrar-carro'>
+                        <p>Nenhum veículo encontrado</p>
+                        <input type='button' value='Cadastrar' id='btn-iniciar-cadastro' class='btn btn-success'>
+                    </div>
 
-                    $(function(){
+                    <script type="text/javascript">
 
-                        $('#btn-buscar').on('click', function() {
-                            var placa_buscar = $('#placa-buscar').val();
-                            if(placa_buscar){
-                                var $this = $(this);
-                                var resultado = $('.resultado');
-                                $this.button('loading');
-                                setTimeout(function() {
-                                    $this.button('reset');
-                                    resultado.slideDown();
-                                }, 1000);
-                            }else{
-                                alert('Digite a placa do carro')
-                            }
-                        });
+                        $(function(){
 
-                        $('#btn-iniciar-cadastro').on('click', function() {
-                            var $this = $(this);
-                            var placa_buscar = $('#placa-buscar').val();
-                            var resultado = $('.resultado');
-                            var form_cadastrar = $('#form_cadastrar');
-                            $this.button('loading');
-                            var url = "estacionamento.php?acao=buscar-vagas-disponiveis";
+                            $('#btn-buscar').on('click', function() {
+                                var placa_buscar = $('#placa-buscar').val();
+                                if(placa_buscar){
+                                    var $this = $(this);
+                                    $this.button('loading');
 
-                            $.post( url, '', function(){})
-                            .done(function(response) {
-                                resultado.html('');
-                                resultado.fadeOut();
-                                form_cadastrar.fadeIn();
-                                $('#placa-cadastrar').attr('value',placa_buscar);
-                                $('#vaga-cadastrar').append(response);
-                                setTimeout(function() {
-                                    $this.button('reset');
-                                }, 1000);
-                            })
-                            .fail(function() {
+                                    var url = "estacionamento.php?acao=buscar-carro";
+
+                                    $.post( url, placa_buscar, function(){})
+                                    .done(function(response) {
+
+                                        
+
+                                        setTimeout(function() {
+                                            $this.button('reset');
+                                            resultado.fadeIn();
+                                        }, 1000);
+                                    })
+                                    .fail(function() {
+                                    });
+
+                                }else{
+                                    alert('Digite a placa do carro')
+                                }
                             });
-                        });
 
-                        $('#btn-cadastrar').on('click', function() {
-                            var $this = $(this);
-                            var placa_cadastrar = $('#placa-cadastrar').val();
-                            var modelo_cadastrar = $('#modelo-cadastrar').val();
-                            var cor_cadastrar = $('#cor-cadastrar').val();
-
-                            if((placa_cadastrar != '') && (modelo_cadastrar != '') && (cor_cadastrar != '')){
-                                $this.button('loading');
+                            $('#btn-iniciar-cadastro').on('click', function() {
+                                var $this = $(this);
+                                var placa_buscar = $('#placa-buscar').val();
                                 var resultado = $('.resultado');
                                 var form_cadastrar = $('#form_cadastrar');
-                                var url = "estacionamento.php?acao=cadastrar-carro";
+                                $this.button('loading');
+                                var url = "estacionamento.php?acao=buscar-vagas-disponiveis";
 
-                                $.post( url, form_cadastrar.serialize(), function(){})
+                                $.post( url, '', function(){})
                                 .done(function(response) {
+                                    resultado.html('');
+                                    resultado.fadeOut();
+                                    form_cadastrar.fadeIn();
+                                    $('#placa-cadastrar').attr('value',placa_buscar);
+                                    $('#vaga-cadastrar').append(response);
                                     setTimeout(function() {
-                                        form_cadastrar[0].reset();
-                                        form_cadastrar.hide();
                                         $this.button('reset');
-                                        resultado.fadeIn();
-                                        resultado.html('<center><i class="fa fa-check" aria-hidden="true"></i> Carro cadastrado com sucesso!</center>');
-                                        setTimeout(function(){
-                                            resultado.fadeOut('slow');
-                                        }, 5000)
                                     }, 1000);
                                 })
                                 .fail(function() {
                                 });
-
-                            }else{
-                                alert("Preencha todos os campos");
-                            }
-                        });
-
-                        $('#btn-entrada').on('click', function() {
-                            alert('oi');
-                            var $this = $(this);
-                            var carro = $this.attr('data-cod_carro');
-                            var vaga = $('#vaga-entrada option:selected').val();
-                            var resultado = $('.resultado');
-
-                            $this.button('loading');
-
-                            var url = "estacionamento.php?acao=entrada-carro";
-
-                            $.post( url, { cod_carro: carro, cod_vaga: vaga } , function(){})
-                            .done(function(response) {
-                                resultado.html(response);
-                                resultado.slideDown();
-                                setTimeout(function() {
-                                    $this.button('reset');
-                                }, 1000);
-                            })
-                            .fail(function() {
                             });
 
+                            $('#btn-cadastrar').on('click', function() {
+                                var $this = $(this);
+                                var placa_cadastrar = $('#placa-cadastrar').val();
+                                var modelo_cadastrar = $('#modelo-cadastrar').val();
+                                var cor_cadastrar = $('#cor-cadastrar').val();
 
+                                if((placa_cadastrar != '') && (modelo_cadastrar != '') && (cor_cadastrar != '')){
+                                    $this.button('loading');
+                                    var resultado = $('.resultado');
+                                    var form_cadastrar = $('#form_cadastrar');
+                                    var url = "estacionamento.php?acao=cadastrar-carro";
+
+                                    $.post( url, form_cadastrar.serialize(), function(){})
+                                    .done(function(response) {
+                                        setTimeout(function() {
+                                            form_cadastrar[0].reset();
+                                            form_cadastrar.hide();
+                                            $this.button('reset');
+                                            resultado.fadeIn();
+                                            resultado.html('<center><i class="fa fa-check" aria-hidden="true"></i> Carro cadastrado com sucesso!</center>');
+                                            setTimeout(function(){
+                                                resultado.fadeOut('slow');
+                                            }, 5000)
+                                        }, 1000);
+                                    })
+                                    .fail(function() {
+                                    });
+
+                                }else{
+                                    alert("Preencha todos os campos");
+                                }
+                            });
+
+                            $('#btn-entrada').on('click', function() {
+                                alert('oi');
+                                var $this = $(this);
+                                var carro = $this.attr('data-cod_carro');
+                                var vaga = $('#vaga-entrada option:selected').val();
+                                var resultado = $('.resultado');
+
+                                $this.button('loading');
+
+                                var url = "estacionamento.php?acao=entrada-carro";
+
+                                $.post( url, { cod_carro: carro, cod_vaga: vaga } , function(){})
+                                .done(function(response) {
+                                    resultado.html(response);
+                                    resultado.slideDown();
+                                    setTimeout(function() {
+                                        $this.button('reset');
+                                    }, 1000);
+                                })
+                                .fail(function() {
+                                });
+                            });
                         });
-                    });
-
                     </script>
 
                     <form action="" method="post" name="form_cadastrar" id="form_cadastrar">

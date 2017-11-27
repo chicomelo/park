@@ -64,8 +64,9 @@ form[name=busca_carro] button{
     width: 25%;
 }
 
-.resultado .cadastrar-carro{
+.cadastrar-carro{
     text-align: center;
+    display: none;
 }
 
 #form_cadastrar{
