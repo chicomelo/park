@@ -49,11 +49,85 @@
                         <input type='button' value='Cadastrar' id='btn-iniciar-cadastro' class='btn btn-success'>
                     </div>
 
+
+
+                    <form action="" method="post" name="form_cadastrar" id="form_cadastrar">
+                        <h4>Cadastrar carro</h4>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="placa">Placa</label>
+                                    <input type="text" name="placa" class="form-control" id="placa-cadastrar" placeholder="Placa" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="modelo">Modelo</label>
+                                    <input type="text" name="modelo" class="form-control" id="modelo-cadastrar" placeholder="Modelo" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="cor">Cor</label>
+                                    <input type="text" name="cor" class="form-control" id="cor-cadastrar" placeholder="Cor" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="cor">Vaga</label>
+                                    <select class="form-control" name="vaga" id="vaga-cadastrar">
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <label>&nbsp;</label><br>
+                                <button type="button" class="btn btn-success" id="btn-cadastrar" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Cadastrando">Cadastrar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form action="" method="post" name="form_entrada_saida" id="form_entrada_saida">
+                        <h4>Entrada do carro</h4>
+
+                        <table class="table">
+                            <tr>
+                                <th>Placa</th>
+                                <th>Modelo</th>
+                                <th>Cor</th>
+                                <th>Vaga</th>
+                                <th>Ação</th>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                <select class="form-control" name="vaga-entrada" id="vaga-entrada">
+                                </select>
+                                </td>
+                                <td>
+                                <button type="button" class="btn btn-success" id="btn-entrada" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Processando" data-cod_carro="">Entrada</button>
+                                <button type="button" class="btn btn-warning" id="btn-saida" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Processando" data-cod_carro="">Saída</button>
+                            </tr>
+                        </table>
+                    </form>
+
                     <script type="text/javascript">
 
                         $(function(){
 
+                            var cadastrar_carro = $('.cadastrar-carro');
+                            var form_es = $('#form_entrada_saida');
+                            var btn_entrada = $('#btn-entrada');
+                            var btn_saida = $("#btn-saida");
+
                             $('#btn-buscar').on('click', function() {
+                                cadastrar_carro.hide();
+                                form_es.hide();
+                                btn_entrada.hide();
+                                btn_saida.hide();
+
                                 var placa_buscar = $('#placa-buscar').val();
                                 if(placa_buscar){
                                     var $this = $(this);
@@ -61,14 +135,29 @@
 
                                     var url = "estacionamento.php?acao=buscar-carro";
 
-                                    $.post( url, placa_buscar, function(){})
+                                    $.post( url, {placa_buscar: placa_buscar}, function(){})
                                     .done(function(response) {
-
-                                        
-
+                                        //var res = $.parseJSON(response);
+                                        console.log(response['carro']['cor']);
                                         setTimeout(function() {
+                                            if(response['acao'] == 0){
+                                                // cacso precise cadastrar o carro
+                                                cadastrar_carro.fadeIn();
+                                            }else if(response['acao'] == 1){
+                                                // caso esteja fazendo entrada
+                                                alert("abre entrada");
+                                            }else if(response['acao'] == 2){
+                                                // Caso esteja saindo
+                                                form_es.fadeIn();
+                                                btn_saida.fadeIn()
+                                                $("#vaga-entrada").append(response['options']);
+                                                $("#vaga-entrada").attr('disabled', 'disabled');
+                                                btn_saida.attr('data-cod-ticket', response['cod_ticket']);
+
+                                                //popula a tabela
+                                                form_es.children().children().children().css('border','1px solid red');
+                                            }
                                             $this.button('reset');
-                                            resultado.fadeIn();
                                         }, 1000);
                                     })
                                     .fail(function() {
@@ -157,71 +246,40 @@
                                 .fail(function() {
                                 });
                             });
+                            $('#btn-saida').on('click', function() {
+                                cadastrar_carro.hide();
+                                btn_entrada.hide();
+
+                                btn_saida.button('loading');
+
+                                var cod_ticket = $(this).attr('data-cod-ticket');
+
+                                alert(cod_ticket);
+
+                                /*
+                                var $this = $(this);
+                                var carro = $this.attr('data-cod_carro');
+                                var vaga = $('#vaga-entrada option:selected').val();
+                                var resultado = $('.resultado');
+
+                                $this.button('loading');
+
+                                var url = "estacionamento.php?acao=entrada-carro";
+
+                                $.post( url, { cod_carro: carro, cod_vaga: vaga } , function(){})
+                                .done(function(response) {
+                                    resultado.html(response);
+                                    resultado.slideDown();
+                                    setTimeout(function() {
+                                        $this.button('reset');
+                                    }, 1000);
+                                })
+                                .fail(function() {
+                                });
+                                */
+                            });
                         });
                     </script>
-
-                    <form action="" method="post" name="form_cadastrar" id="form_cadastrar">
-                        <h4>Cadastrar carro</h4>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="placa">Placa</label>
-                                    <input type="text" name="placa" class="form-control" id="placa-cadastrar" placeholder="Placa" value="">
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="modelo">Modelo</label>
-                                    <input type="text" name="modelo" class="form-control" id="modelo-cadastrar" placeholder="Modelo" value="">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="cor">Cor</label>
-                                    <input type="text" name="cor" class="form-control" id="cor-cadastrar" placeholder="Cor" value="">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="cor">Vaga</label>
-                                    <select class="form-control" name="vaga" id="vaga-cadastrar">
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <label>&nbsp;</label><br>
-                                <button type="button" class="btn btn-success" id="btn-cadastrar" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Cadastrando">Cadastrar</button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <form action="" method="post" name="form_entrada_saida" id="form_entrada_saida">
-                        <h4>Entrada do carro</h4>
-
-                        <table class="table">
-                            <tr>
-                                <th>Placa</th>
-                                <th>Modelo</th>
-                                <th>Cor</th>
-                                <th>Vaga</th>
-                                <th>Ação</th>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                <select class="form-control" name="vaga-entrada" id="vaga-entrada">
-                                </select>
-                                </td>
-                                <td>
-                                <button type="button" class="btn btn-success" id="btn-entrada" data-loading-text="<i class='fa fa-spinner fa-spin'></i> Inserindo" data-cod_carro="">Entrada</button>
-                            </tr>
-                        </table>
-                    </form>
-
-
                 </div>
             </div>
             <div class="col-sm-6">

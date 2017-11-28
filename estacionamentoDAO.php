@@ -35,10 +35,10 @@ class CarrosDAO extends Sql {
 		return ($resultado);
     }
 
-    function buscar_carro_placa($carros){
+    function buscar_carro_placa($placa){
         $sql = new Sql();
 
-		$results = $sql->select("SELECT * FROM carros WHERE placa = :PLACA", array(":PLACA"=>$carros->getplaca()));
+		$results = $sql->select("SELECT * FROM carros WHERE placa = :PLACA", array(":PLACA"=>$placa));
 
         return $results;
     }
@@ -108,20 +108,10 @@ class TicketsDAO extends Sql{
         array(":COD_TICKET"=>$cod_ticket));
         return ($resultado);
     }
-    function buscarInfoCarro($placa){
-
+    function buscar_info_carro($cod_carro){
         $sql = new Sql();
-
-        $query = "SELECT * FROM carros WHERE placa = $placa ";
-
-		$results = $sql->select("SELECT * FROM carros WHERE placa = :PLACA", array(":PLACA"=>$placa));
+		$results = $sql->select("SELECT * FROM tickets WHERE cod_carro = :COD_CARRO ORDER BY cod_ticket DESC LIMIT 1", array(":COD_CARRO"=>$cod_carro));
 		return $results;
-
-        # array com as informações do carro
-        /*
-        id carro, modelo carro
-
-        */
     }
 }
 

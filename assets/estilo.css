@@ -59,7 +59,7 @@ form[name=busca_carro] button{
     border: 0;
     line-height: normal;
 }
-.resultado table tr td:nth-child(5), .resultado table tr th:nth-child(5){
+#form_entrada_saida tr td:nth-child(5), #form_entrada_saida tr th:nth-child(5){
     text-align: center;
     width: 25%;
 }
@@ -69,7 +69,7 @@ form[name=busca_carro] button{
     display: none;
 }
 
-#form_cadastrar{
+#form_cadastrar, #form_entrada_saida{
     display: none;
     margin: 0px auto;
 }
