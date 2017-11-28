@@ -88,7 +88,7 @@
                     </form>
 
                     <form action="" method="post" name="form_entrada_saida" id="form_entrada_saida">
-                        <h4>Entrada do carro</h4>
+                        <h4>Gerenciar carro</h4>
 
                         <table class="table">
                             <tr>
@@ -99,11 +99,11 @@
                                 <th>Ação</th>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <td class="placa_carro"></td>
+                                <td class="modelo_carro"></td>
+                                <td class="cor_carro"></td>
                                 <td>
-                                <select class="form-control" name="vaga-entrada" id="vaga-entrada">
+                                <select class="form-control" name="vaga-carro" id="vaga-carro">
                                 </select>
                                 </td>
                                 <td>
@@ -138,7 +138,7 @@
                                     $.post( url, {placa_buscar: placa_buscar}, function(){})
                                     .done(function(response) {
                                         //var res = $.parseJSON(response);
-                                        console.log(response['carro']['cor']);
+                                        //console.log(response);
                                         setTimeout(function() {
                                             if(response['acao'] == 0){
                                                 // cacso precise cadastrar o carro
@@ -150,12 +150,14 @@
                                                 // Caso esteja saindo
                                                 form_es.fadeIn();
                                                 btn_saida.fadeIn()
-                                                $("#vaga-entrada").append(response['options']);
-                                                $("#vaga-entrada").attr('disabled', 'disabled');
+                                                $("#vaga-carro").append(response['options']);
+                                                $("#vaga-carro").attr('disabled', 'disabled');
                                                 btn_saida.attr('data-cod-ticket', response['cod_ticket']);
 
                                                 //popula a tabela
-                                                form_es.children().children().children().css('border','1px solid red');
+                                                $('.placa_carro').html(response['carro']['placa']);
+                                                $('.modelo_carro').html(response['carro']['modelo']);
+                                                $('.cor_carro').html(response['carro']['cor']);
                                             }
                                             $this.button('reset');
                                         }, 1000);
@@ -252,9 +254,20 @@
 
                                 btn_saida.button('loading');
 
-                                var cod_ticket = $(this).attr('data-cod-ticket');
+                                var ticket = $(this).attr('data-cod-ticket');
+                                var vaga = $('#vaga-carro option:selected').val();
 
-                                alert(cod_ticket);
+                                var url = "estacionamento.php?acao=saida-carro";
+
+                                $.post( url, { cod_ticket: ticket, cod_vaga: vaga } , function(){})
+                                .done(function(response) {
+                                    console.log(response);
+                                    setTimeout(function() {
+                                        btn_saida.button('reset');
+                                    }, 1000);
+                                })
+                                .fail(function() {
+                                });
 
                                 /*
                                 var $this = $(this);
@@ -264,7 +277,6 @@
 
                                 $this.button('loading');
 
-                                var url = "estacionamento.php?acao=entrada-carro";
 
                                 $.post( url, { cod_carro: carro, cod_vaga: vaga } , function(){})
                                 .done(function(response) {

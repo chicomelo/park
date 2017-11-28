@@ -42,7 +42,6 @@ switch ($acao){
                 $tickets-> setvalor($linha['valor']);
             }
 
-
             # caso não tenha valor cadastrado, é pq o veículo só deu entrada
             if($tickets->getvalor()){
                 # entrada
@@ -59,19 +58,9 @@ switch ($acao){
             }else{
                 # saída
 
-                # busca vagas disponíveis
-                $vagasDAO = new VagasDAO();
-                $vagas_ativas = $vagasDAO->buscar_vagas_disponiveis();
-
                 $options = '';
-                foreach($vagas_ativas as $vagas){
-                    if($vagas['cod_vaga'] == $tickets -> getcod_vaga()){
-                        $options .= '<option value="'.$vagas['cod_vaga'].'" selected>'.$vagas['cod_vaga'].'</option>';
-                    }else{
-                        $options .= '<option value="'.$vagas['cod_vaga'].'">'.$vagas['cod_vaga'].'</option>';
-                    }
+                        $options .= '<option value="'.$tickets->getcod_vaga().'">'.$tickets->getcod_vaga().'</option>';
 
-                }
                 echo json_encode(array("acao" => 2, "options" => $options, "cod_ticket" => $tickets->getcod_ticket(), "carro" =>  array("placa" => $carros->getplaca(), "modelo" => $carros->getmodelo(), "cor" => $carros->getcor())));
             }
 
@@ -80,7 +69,7 @@ switch ($acao){
         }
 
 
-    break;
+        break;
     case 'buscar-vagas-disponiveis':
 
         # busca vagas disponíveis
@@ -94,7 +83,7 @@ switch ($acao){
 
         echo json_encode($options);
 
-    break;
+        break;
     case 'cadastrar-carro':
 
         # setando objetos
@@ -129,19 +118,69 @@ switch ($acao){
         $tickets = new Tickets();
         $tickets->setcod_vaga($vagas->getcod_vaga());
         $tickets->setcod_carro($carros->getcod_carro());
-        $tickets->setdata_entrada(date('m/d/Y h:i:s'));
+
         $ticketsDAO = new TicketsDAO();
         $res_ticket = $ticketsDAO -> inserir($tickets);
 
         echo json_encode($res_ticket);
 
-    break;
+        break;
     case 'entrada-carro':
 
     echo "entrada";
 
-    break;
-    }
+        break;
+    case 'saida-carro':
+
+        $cod_ticket = $_POST['cod_ticket'];
+        $cod_vaga = $_POST['cod_vaga'];
+        $data_saida = date('Y-m-d h:i:s');
+        $valor_total = 0;
+
+        $ticketsDAO = new TicketsDAO();
+        $tickets_res = $ticketsDAO->buscar_info_cod($cod_ticket);
+        $tickets_res = $tickets_res[0];
+
+        $tickets = new Tickets();
+        $tickets-> setcod_ticket($tickets_res['cod_ticket']);
+        $tickets-> setcod_carro($tickets_res['cod_carro']);
+        $tickets-> setcod_vaga($tickets_res['cod_vaga']);
+        $tickets-> setdata_entrada($tickets_res['data_entrada']);
+        $tickets-> setdata_saida($data_saida);
+
+        #$intervalo = date_diff($tickets->getdata_entrada(),$tickets->getdata_saida());
+
+        $inicio = strtotime($tickets->getdata_entrada());
+        $fim = strtotime($tickets->getdata_saida());
+        $intervalo = ($fim - $inicio)/60;
+        #$hora = $
+
+        if ($intervalo > 120){
+            $preco = 3.0;
+            $horas = $intervalo / 60
+            $valor_total = $preco *
+        }
+
+        echo json_encode($intervalo);
+        #echo json_encode($intervalo);
+        die();
+        $intervalo = $intervalo->format('%i');
+
+        echo json_encode($intervalo,$tickets->getdata_entrada(),$tickets->getdata_saida());
+        $tickets-> setvalor($valor_total);
+
+
+
+
+
+
+        $res_tickets = $ticketsDAO -> registrar_saida($cod_ticket, $data_saida);
+
+        $vagasDAO = new VagasDAO();
+        $res_vagas = $vagasDAO -> liberar_vaga($cod_vaga);
+
+        break;
+}
 
 
 ?>

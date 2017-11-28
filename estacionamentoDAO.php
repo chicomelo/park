@@ -71,6 +71,12 @@ class VagasDAO extends Sql{
 		return $results;
     }
 
+    function buscar_vagas_totais(){
+        $sql = new Sql();
+        $results = $sql->select("SELECT * FROM vagas");
+        return $results;
+    }
+
     function atualizar($vagas){
         $sql = new Sql();
 
@@ -91,7 +97,8 @@ class TicketsDAO extends Sql{
         array(":COD_VAGA"=>$tickets->getcod_vaga(), ":COD_CARRO"=>$tickets->getcod_carro() ));
         return ($resultado);
     }
-    function atualizar($data_saida, $valor, $cod_ticket){
+
+    function registrar_saida($cod_ticket, $data_saida){
         $sql = new Sql();
 
         $resultado = $sql -> query("UPDATE tickets
@@ -101,6 +108,7 @@ class TicketsDAO extends Sql{
         array(":DATA_SAIDA"=>$data_saida, ":VALOR"=>$valor, ":COD_TICKET"=>$cod_ticket));
         return ($resultado);
     }
+
     function deletar($cod_ticket){
         $sql = new Sql();
 
@@ -108,9 +116,16 @@ class TicketsDAO extends Sql{
         array(":COD_TICKET"=>$cod_ticket));
         return ($resultado);
     }
+
     function buscar_info_carro($cod_carro){
         $sql = new Sql();
 		$results = $sql->select("SELECT * FROM tickets WHERE cod_carro = :COD_CARRO ORDER BY cod_ticket DESC LIMIT 1", array(":COD_CARRO"=>$cod_carro));
+		return $results;
+    }
+
+    function buscar_info_cod($cod_ticket){
+        $sql = new Sql();
+		$results = $sql->select("SELECT * FROM tickets WHERE cod_ticket = :COD_TICKET", array(":COD_TICKET"=>$cod_ticket));
 		return $results;
     }
 }
