@@ -137,6 +137,8 @@ switch ($acao){
         $data_saida = date('Y-m-d h:i:s');
         $valor_total = 0;
 
+        $data_saida = '2017-11-27 21:30:52';
+
         $ticketsDAO = new TicketsDAO();
         $tickets_res = $ticketsDAO->buscar_info_cod($cod_ticket);
         $tickets_res = $tickets_res[0];
@@ -148,33 +150,30 @@ switch ($acao){
         $tickets-> setdata_entrada($tickets_res['data_entrada']);
         $tickets-> setdata_saida($data_saida);
 
-        #$intervalo = date_diff($tickets->getdata_entrada(),$tickets->getdata_saida());
-
         $inicio = strtotime($tickets->getdata_entrada());
         $fim = strtotime($tickets->getdata_saida());
         $intervalo = ($fim - $inicio)/60;
-        #$hora = $
+        $horas = $intervalo / 60;
 
         if ($intervalo > 120){
             $preco = 3.0;
-            $horas = $intervalo / 60
-            $valor_total = $preco *
+            $valor_total = round($preco * ($horas -2), 2);
+            $valor_total += 5;
+        }elseif($intervalo > 60){
+            $preco = 2.5;
+            $valor_total = 5.0;
+        }else{
+            $preco = 3.5;
+            $valor_total = 3.5;
         }
 
-        echo json_encode($intervalo);
-        #echo json_encode($intervalo);
-        die();
-        $intervalo = $intervalo->format('%i');
-
-        echo json_encode($intervalo,$tickets->getdata_entrada(),$tickets->getdata_saida());
         $tickets-> setvalor($valor_total);
 
+        echo json_encode($valor_total);
+        exit();
 
 
-
-
-
-        $res_tickets = $ticketsDAO -> registrar_saida($cod_ticket, $data_saida);
+        $res_tickets = $ticketsDAO -> registrar_saida($tickets -> getcod_ticket(), $tickets-> getdata_saida(), $tickets-> getvalor());
 
         $vagasDAO = new VagasDAO();
         $res_vagas = $vagasDAO -> liberar_vaga($cod_vaga);

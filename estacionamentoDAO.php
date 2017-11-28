@@ -89,6 +89,7 @@ class VagasDAO extends Sql{
 }
 
 class TicketsDAO extends Sql{
+
     function inserir($tickets){
         $sql = new Sql();
 
@@ -98,7 +99,7 @@ class TicketsDAO extends Sql{
         return ($resultado);
     }
 
-    function registrar_saida($cod_ticket, $data_saida){
+    function registrar_saida($cod_ticket, $data_saida, $valor){
         $sql = new Sql();
 
         $resultado = $sql -> query("UPDATE tickets
