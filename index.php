@@ -49,6 +49,9 @@
                         <input type='button' value='Cadastrar' id='btn-iniciar-cadastro' class='btn btn-success'>
                     </div>
 
+                    <div class='msg-sucesso'>
+                        <center><i class="fa fa-check" aria-hidden="true"></i> Carro cadastrado com sucesso!</center>
+                    </div>
 
 
                     <form action="" method="post" name="form_cadastrar" id="form_cadastrar">
@@ -121,6 +124,7 @@
                             var form_es = $('#form_entrada_saida');
                             var btn_entrada = $('#btn-entrada');
                             var btn_saida = $("#btn-saida");
+                            var msg_sucesso = $(".msg-sucesso");
 
                             $('#btn-buscar').on('click', function() {
                                 cadastrar_carro.hide();
@@ -129,6 +133,7 @@
                                 btn_saida.hide();
 
                                 var placa_buscar = $('#placa-buscar').val();
+
                                 if(placa_buscar){
                                     var $this = $(this);
                                     $this.button('loading');
@@ -137,6 +142,7 @@
 
                                     $.post( url, {placa_buscar: placa_buscar}, function(){})
                                     .done(function(response) {
+
                                         //var res = $.parseJSON(response);
                                         //console.log(response);
                                         setTimeout(function() {
@@ -171,6 +177,7 @@
                             });
 
                             $('#btn-iniciar-cadastro').on('click', function() {
+                                cadastrar_carro.hide();
                                 var $this = $(this);
                                 var placa_buscar = $('#placa-buscar').val();
                                 var resultado = $('.resultado');
@@ -201,20 +208,20 @@
 
                                 if((placa_cadastrar != '') && (modelo_cadastrar != '') && (cor_cadastrar != '')){
                                     $this.button('loading');
-                                    var resultado = $('.resultado');
+
                                     var form_cadastrar = $('#form_cadastrar');
                                     var url = "estacionamento.php?acao=cadastrar-carro";
 
                                     $.post( url, form_cadastrar.serialize(), function(){})
                                     .done(function(response) {
+                                        console.log(response);
                                         setTimeout(function() {
                                             form_cadastrar[0].reset();
                                             form_cadastrar.hide();
                                             $this.button('reset');
-                                            resultado.fadeIn();
-                                            resultado.html('<center><i class="fa fa-check" aria-hidden="true"></i> Carro cadastrado com sucesso!</center>');
+                                            msg_sucesso.fadeIn();
                                             setTimeout(function(){
-                                                resultado.fadeOut('slow');
+                                                msg_sucesso.fadeOut('slow');
                                             }, 5000)
                                         }, 1000);
                                     })

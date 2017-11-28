@@ -25,7 +25,6 @@ switch ($acao){
             $carros-> setmodelo($linha['modelo']);
             $carros-> setcor($linha['cor']);
         }
-
         if($carros -> getcod_carro()){
 
             $tickets = new Tickets();
@@ -58,8 +57,7 @@ switch ($acao){
             }else{
                 # saída
 
-                $options = '';
-                        $options .= '<option value="'.$tickets->getcod_vaga().'">'.$tickets->getcod_vaga().'</option>';
+                $options = '<option value="'.$tickets->getcod_vaga().'">'.$tickets->getcod_vaga().'</option>';
 
                 echo json_encode(array("acao" => 2, "options" => $options, "cod_ticket" => $tickets->getcod_ticket(), "carro" =>  array("placa" => $carros->getplaca(), "modelo" => $carros->getmodelo(), "cor" => $carros->getcor())));
             }
@@ -102,7 +100,7 @@ switch ($acao){
 
         # insere carro no banco
         $carrosDAO = new CarrosDAO();
-        $res_carro = $carrosDAO-> inserir($carros);
+        $res_carro = $carrosDAO-> inserir($carros->getplaca(),$carros->getmodelo(),$carros->getcor());
 
         # busca carro cadastrado a fim de obter o codigo do carro para cadastrar a entrada no estacionamento
         $res_carro_cod = $carrosDAO -> buscar_carro_placa($carros->getplaca());
@@ -120,7 +118,7 @@ switch ($acao){
         $tickets->setcod_carro($carros->getcod_carro());
 
         $ticketsDAO = new TicketsDAO();
-        $res_ticket = $ticketsDAO -> inserir($tickets);
+        $res_ticket = $ticketsDAO -> inserir($tickets->getcod_vaga(), $tickets->getcod_carro());
 
         echo json_encode($res_ticket);
 
@@ -134,10 +132,10 @@ switch ($acao){
 
         $cod_ticket = $_POST['cod_ticket'];
         $cod_vaga = $_POST['cod_vaga'];
-        $data_saida = date('Y-m-d h:i:s');
+        $data_saida = date('Y-m-d H:i:s');
         $valor_total = 0;
 
-        $data_saida = '2017-11-27 21:30:52';
+        #$data_saida = '2017-11-27 21:30:52';
 
         $ticketsDAO = new TicketsDAO();
         $tickets_res = $ticketsDAO->buscar_info_cod($cod_ticket);
@@ -171,9 +169,9 @@ switch ($acao){
         $res_tickets = $ticketsDAO -> registrar_saida($tickets -> getcod_ticket(), $tickets-> getdata_saida(), $tickets-> getvalor());
 
         $vagasDAO = new VagasDAO();
-        $res_vaga = $vagasDAO-> atualizar($cod_vaga, 1);
+        $res_vaga = $vagasDAO-> atualizar($cod_vaga, '1');
 
-        echo json_encode(array('horas'=>$horas, 'valor' => $valor_total);
+        echo json_encode(array('horas'=>$horas, 'valor' => $valor_total));
 
         break;
 }

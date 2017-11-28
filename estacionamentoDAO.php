@@ -26,12 +26,12 @@
 require_once ("sql.php");
 
 class CarrosDAO extends Sql {
-    function inserir($carros){
+    function inserir($placa, $modelo, $cor){
         $sql = new Sql();
 
 		$resultado = $sql -> query("INSERT INTO carros (placa, modelo, cor)
 										VALUES (:PLACA, :MODELO, :COR)",
-		array(":PLACA"=>$carros->getplaca(), ":MODELO"=>$carros->getmodelo() ,":COR"=>$carros->getcor()));
+		array(":PLACA"=>$placa, ":MODELO"=>$modelo ,":COR"=>$cor));
 		return ($resultado);
     }
 
@@ -90,12 +90,12 @@ class VagasDAO extends Sql{
 
 class TicketsDAO extends Sql{
 
-    function inserir($tickets){
+    function inserir($cod_vaga, $cod_carro){
         $sql = new Sql();
 
-        $resultado = $sql -> query("INSERT INTO tickets (cod_vaga, cod_carro, data_chegada)
+        $resultado = $sql -> query("INSERT INTO tickets (cod_vaga, cod_carro, data_entrada)
                         VALUES (:COD_VAGA, :COD_CARRO, NOW())",
-        array(":COD_VAGA"=>$tickets->getcod_vaga(), ":COD_CARRO"=>$tickets->getcod_carro() ));
+        array(":COD_VAGA"=>$cod_vaga, ":COD_CARRO"=>$cod_carro ));
         return ($resultado);
     }
 
