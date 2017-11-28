@@ -98,7 +98,7 @@ switch ($acao){
 
         # atualiza a vaga para indisponivel
         $vagasDAO = new VagasDAO();
-        $res_vaga = $vagasDAO-> atualizar($vagas);
+        $res_vaga = $vagasDAO-> atualizar($vagas->getcod_vaga(), $vagas->getativo());
 
         # insere carro no banco
         $carrosDAO = new CarrosDAO();
@@ -166,17 +166,14 @@ switch ($acao){
             $preco = 3.5;
             $valor_total = 3.5;
         }
-
         $tickets-> setvalor($valor_total);
-
-        echo json_encode($valor_total);
-        exit();
-
 
         $res_tickets = $ticketsDAO -> registrar_saida($tickets -> getcod_ticket(), $tickets-> getdata_saida(), $tickets-> getvalor());
 
         $vagasDAO = new VagasDAO();
-        $res_vagas = $vagasDAO -> liberar_vaga($cod_vaga);
+        $res_vaga = $vagasDAO-> atualizar($cod_vaga, 1);
+
+        echo json_encode(array('horas'=>$horas, 'valor' => $valor_total);
 
         break;
 }

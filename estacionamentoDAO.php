@@ -77,13 +77,13 @@ class VagasDAO extends Sql{
         return $results;
     }
 
-    function atualizar($vagas){
+    function atualizar($cod_vaga, $ativo){
         $sql = new Sql();
 
         $resultado = $sql -> query("UPDATE vagas
                                         SET ativo = :ATIVO
                                         WHERE cod_vaga = :COD_VAGA",
-        array(":ATIVO"=>$vagas->getativo(), ":COD_VAGA"=>$vagas->getcod_vaga()));
+        array(":ATIVO"=>$ativo, ":COD_VAGA"=>$cod_vaga));
         return ($resultado);
     }
 }
