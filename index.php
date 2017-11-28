@@ -116,6 +116,24 @@
                         </table>
                     </form>
 
+                    <div class="tab-pagamento">
+                        <table class="table">
+                            <tr>
+                                <td>Entrada:</td>
+                                <td class="data-entrada"></td>
+                                <td>Saída:</td>
+                                <td class="data-saida"></td>
+                                <td>Permanência:</td>
+                                <td class="permanencia"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td>Valor total:</td>
+                                <td class="valor-total"></td>
+                            </tr>
+                        </table>
+                    </div>
+
                     <script type="text/javascript">
 
                         $(function(){
@@ -125,6 +143,7 @@
                             var btn_entrada = $('#btn-entrada');
                             var btn_saida = $("#btn-saida");
                             var msg_sucesso = $(".msg-sucesso");
+                            var tab_pagamento = $(".tab-pagamento");
 
                             $('#btn-buscar').on('click', function() {
                                 cadastrar_carro.hide();
@@ -270,6 +289,13 @@
                                 .done(function(response) {
                                     console.log(response);
                                     setTimeout(function() {
+                                        form_es.hide();
+                                        $('.data-entrada').html(response['data_entrada']);
+                                        $('.data-saida').html(response['data_saida']);
+                                        $('.permanencia').html(response['permanencia']);
+                                        $('.valor-total').html(response['valor_total']);
+
+                                        tab_pagamento.fadeIn();
                                         btn_saida.button('reset');
                                     }, 1000);
                                 })

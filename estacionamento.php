@@ -135,7 +135,7 @@ switch ($acao){
         $data_saida = date('Y-m-d H:i:s');
         $valor_total = 0;
 
-        #$data_saida = '2017-11-27 21:30:52';
+        $data_saida = '2017-11-28 22:52:24';
 
         $ticketsDAO = new TicketsDAO();
         $tickets_res = $ticketsDAO->buscar_info_cod($cod_ticket);
@@ -155,7 +155,7 @@ switch ($acao){
 
         if ($intervalo > 120){
             $preco = 3.0;
-            $valor_total = round($preco * ($horas -2), 2);
+            $valor_total = $preco * ($horas -2);
             $valor_total += 5;
         }elseif($intervalo > 60){
             $preco = 2.5;
@@ -164,15 +164,16 @@ switch ($acao){
             $preco = 3.5;
             $valor_total = 3.5;
         }
+
         $tickets-> setvalor($valor_total);
 
-        $res_tickets = $ticketsDAO -> registrar_saida($tickets -> getcod_ticket(), $tickets-> getdata_saida(), $tickets-> getvalor());
+
+        #$res_tickets = $ticketsDAO -> registrar_saida($tickets -> getcod_ticket(), $tickets-> getdata_saida(), $tickets-> getvalor());
 
         $vagasDAO = new VagasDAO();
-        $res_vaga = $vagasDAO-> atualizar($cod_vaga, '1');
+        #$res_vaga = $vagasDAO-> atualizar($cod_vaga, '1');
 
-        echo json_encode(array('horas'=>$horas, 'valor' => $valor_total));
-
+        echo json_encode(array("data_entrada"=>$tickets->getdata_entrada(), "data_saida"=>$tickets->getdata_saida(), "permanencia"=>$horas, "valor_total" => $tickets-> getvalor()));
         break;
 }
 

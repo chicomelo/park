@@ -69,7 +69,7 @@ form[name=busca_carro] button{
     display: none;
 }
 
-#form_cadastrar, #form_entrada_saida, .msg-sucesso{
+#form_cadastrar, #form_entrada_saida, .msg-sucesso, .tab-pagamento{
     display: none;
     margin: 0px auto;
 }
