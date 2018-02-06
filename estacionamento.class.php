@@ -1,7 +1,7 @@
 <?php
-//cria��o da classe modelo
+//criação da classe modelo
 class Carros{
-	//defini��o das colunas existentes na tabela do banco de dados
+	//definição das colunas existentes na tabela do banco de dados
 	private $cod_carro;
 	private $placa;
 	private $modelo;
