@@ -51,7 +51,7 @@ class Carros{
 
 
 class Vagas{
-	//defini��o das colunas existentes na tabela do banco de dados
+	//definição das colunas existentes na tabela do banco de dados
 	private $cod_vaga;
 	private $numero;
 	private $ativo;
